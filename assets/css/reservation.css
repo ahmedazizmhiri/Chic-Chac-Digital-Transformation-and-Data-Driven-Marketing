@@ -1,0 +1,111 @@
+.form-row,.time-selection{gap:20px;display:flex}.form-group,.input-wrapper{position:relative}button,input,select{transition:.3s}.form-group.full-width,button,input,select{width:100%}button,label{font-weight:600}*{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#4A3600;--secondary-color:#d19f68;--text-color:#333;--background-color:#f4f7f6;--input-border-color:#bdc3c7;--white:#ffffff}.reservation-container{font-family:Arial,sans-serif;color:var(--text-color);line-height:1.6;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}#reservation-form{background-color:var(--white);width:100%;max-width:600px;padding:40px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.1);margin:auto}.form-row{margin-bottom:20px}.form-group,.time-selection .form-group{flex:1}label{display:block;margin-bottom:10px;color:var(--primary-color)}.input-wrapper i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--secondary-color);z-index:10;width:20px;text-align:center}input,select{padding:12px 12px 12px 45px;border:2px solid var(--input-border-color);border-radius:8px;font-size:16px;appearance:none;background-color:var(--white)}#hour,#minute{padding:12px}select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M1 4l5 5 5-5' fill='none' stroke='%23888' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center}input:focus,select:focus{outline:0;border-color:var(--secondary-color);box-shadow:0 0 0 3px rgba(52,152,219,.2)}.form-submit{text-align:center;margin-top:30px}button{background-color:var(--primary-color);color:var(--white);border:none;padding:15px 30px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}button:hover{background-color:var(--secondary-color);transform:translateY(-3px);box-shadow:0 4px 15px rgba(0,0,0,.2)}button i{margin-right:10px}@media screen and (max-width:600px){.form-row,.time-selection{flex-direction:column;gap:20px}#reservation-form{padding:20px;width:100%}}::placeholder{color:var(--input-border-color)}input:focus::placeholder,select:focus::placeholder{color:var(--secondary-color)}
+:root {
+    --primary-color: #d19f68;
+    --text-light: #ffffff;
+    --bg-dark: #1a1a1a;
+  }
+  
+  /* ======================== */
+  /* HEADER MOBILE UNIFIE */
+  /* ======================== */
+  @media (max-width: 991px) {
+    .mobile-menu-toggle {
+      position: fixed !important;
+      top: 20px !important;
+      right: 20px !important;
+      z-index: 1001 !important;
+      background: rgba(0,0,0,0.5) !important;
+      border: none !important;
+      padding: 12px !important;
+      border-radius: 50%;
+      width: 45px !important;
+      height: 45px !important;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease !important;
+    }
+  
+    .mobile-menu-toggle i {
+      color: var(--text-light) !important;
+      font-size: 1.5em !important;
+      background: transparent !important;
+      padding: 0 !important;
+    }
+  
+    .mobile-sidebar {
+      top: 60px;
+      height: calc(100vh - 60px);
+      position: fixed;
+      right: -100%;
+      width: 85%;
+      max-width: 300px;
+      background: var(--bg-dark);
+      z-index: 1002;
+      transition: right 0.3s ease;
+      padding: 30px 20px;
+      overflow-y: auto;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+    }
+  
+    .mobile-sidebar.active {
+      right: 0;
+    }
+  
+    .mobile-sidebar.active ~ .mobile-menu-toggle {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+  
+    .mobile-nav ul {
+      margin-top: 60px;
+      padding: 0;
+    }
+  
+    .mobile-nav li {
+      margin: 20px 0;
+      text-align: center;
+    }
+  
+    .mobile-nav a {
+      color: var(--text-light) !important;
+      font-size: 1.1rem !important;
+      padding: 12px 0 !important;
+      display: block !important;
+      transition: opacity 0.3s ease;
+    }
+  
+    .mobile-nav a:hover {
+      opacity: 0.8;
+    }
+  
+    .mobile-menu-close {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      color: var(--text-light) !important;
+      font-size: 1.8rem !important;
+      background: none !important;
+    }
+  }
+  
+  /* ======================== */
+  /* TRANSITIONS UNIFIEES */
+  /* ======================== */
+  .mobile-menu-toggle,
+  .mobile-sidebar {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* ======================== */
+  /* CORRECTIONS SPECIFIQUES */
+  /* ======================== */
+  body[class] .mobile-menu-toggle {
+    box-shadow: none !important; /* Suppression ombre */
+    top: 20px !important; /* Alignement avec autres pages */
+  }
+  
+  .header-area.hidden .mobile-menu-toggle {
+    transform: scale(0.9);
+    top: 15px !important;
+  }

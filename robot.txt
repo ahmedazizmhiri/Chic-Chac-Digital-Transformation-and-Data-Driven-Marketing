@@ -1,0 +1,18 @@
+ser-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /wp-admin/
+Disallow: /tmp/
+Disallow: /private/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /search/
+
+Sitemap: https://www.chic-chac.net/sitemap_4512880.xml
+Sitemap: https://www.chic-chac.net/6295006_40.xml
+Sitemap: https://www.chic-chac.net/sitemap.xml
+
+
+# Paramètres spécifiques aux moteurs
+Host: www.chic-chac.net
+Crawl-delay: 2
