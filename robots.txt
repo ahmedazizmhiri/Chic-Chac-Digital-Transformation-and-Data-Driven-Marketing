@@ -8,8 +8,7 @@ Disallow: /cart/
 Disallow: /checkout/
 Disallow: /search/
 
-Sitemap: https://www.chic-chac.net/sitemap_4512880.xml
-Sitemap: https://www.chic-chac.net/6295006_40.xml
+
 Sitemap: https://www.chic-chac.net/sitemap.xml
 
 
