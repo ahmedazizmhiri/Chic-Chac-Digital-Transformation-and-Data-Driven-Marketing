@@ -1,71 +1,285 @@
-document.addEventListener("DOMContentLoaded",function(){let e=document.getElementById("reservation-form"),t=e.querySelector('button[type="submit"]'),a=document.getElementById("date"),r=document.getElementById("hour"),i=document.getElementById("minute"),n=document.getElementById("phone");function l(){let e=new Date(a.value),t=new Date;return t.setHours(0,0,0,0),e.setHours(0,0,0,0),!(e<t)||(a.value="",d("error","Veuillez s\xe9lectionner une date valide \xe0 partir d'aujourd'hui."),!1)}function o(){let e=new Date(a.value),t=new Date,n=parseInt(r.value),l=parseInt(i.value);if(e.toDateString()===t.toDateString()){let o=new Date,s=new Date(e);if(s.setHours(n,l,0,0),s<=o)return r.value="",i.value="",d("error","Veuillez s\xe9lectionner une heure future."),!1}return!0}function s(){if(document.getElementById("reservationModal"))return;let e=`
-            <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="reservationModalLabel">Notification</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="reservationModalBody">
-                            <!-- Modal content will be dynamically inserted here -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `,t=document.createElement("div");t.innerHTML=e,document.body.appendChild(t.firstChild)}function d(e,t){s();let a=document.getElementById("reservationModalBody"),r=document.getElementById("reservationModalLabel");if(!a||!r){alert(t);return}r.textContent="success"===e?"R\xe9servation Confirm\xe9e":"Erreur",a.innerHTML=`
-            <div class="text-center">
-                <i class="fas fa-${"success"===e?"check":"times"}-circle text-${"success"===e?"success":"danger"} mb-3" style="font-size: 3rem;"></i>
-                <p>${t}</p>
-            </div>
-        `;let i=document.getElementById("reservationModal");window.jQuery&&$("#reservationModal").modal?$("#reservationModal").modal("show"):i?(i.style.display="block",i.classList.add("show")):alert(t)}async function u(e,t){try{let a=await fetch("https://chic-chac-fdgybug7fqdcazem.francecentral-01.azurewebsites.net/api/reservations");if(!a.ok)throw Error("Impossible de v\xe9rifier les disponibilit\xe9s");return!(await a.json()).some(a=>a.date===e&&a.time===t)}catch(r){throw console.error("Error checking availability:",r),Error("Erreur de v\xe9rification de disponibilit\xe9")}}async function c(e){let t=await fetch("https://chic-chac-fdgybug7fqdcazem.francecentral-01.azurewebsites.net/api/reservations",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(e)});if(!t.ok)throw Error((await t.json()).error||"Erreur lors de la r\xe9servation");return await t.json()}let v,m,h,f,b,x,p,g;s(),n.addEventListener("input",function(e){this.value=this.value.replace(/\D/g,"").slice(0,10)}),a.addEventListener("change",function(){l(),r.value="",i.value=""}),r.addEventListener("change",function(){a.value&&o()}),i.addEventListener("change",function(){a.value&&o()}),e.addEventListener("submit",async function(s){s.preventDefault(),t.disabled=!0,t.innerHTML=`
-            <div class="loader-container">
-                <div class="loader"></div>
-                V\xe9rification en cours...
-            </div>
-        `;try{var v,m;let{fullName:h,phone:f,service:b,date:x,hour:p,minute:g}=function e(){let t=document.getElementById("full-name").value.trim(),l=n.value.trim(),o=document.getElementById("service").value,s=a.value,d=r.value,u=i.value;if(t.length<2)throw Error("Veuillez entrer un nom valide.");if(!/^\d{10}$/.test(l))throw Error("Num\xe9ro de t\xe9l\xe9phone invalide. Utilisez 10 chiffres.");if(!o)throw Error("Veuillez s\xe9lectionner un service.");if(!s)throw Error("Veuillez s\xe9lectionner une date.");if(!d||!u)throw Error("Veuillez s\xe9lectionner une heure et des minutes.");return{fullName:t,phone:l,service:o,date:s,hour:d,minute:u}}();if(!l()||!o())throw Error("Veuillez v\xe9rifier la date et l'heure s\xe9lectionn\xe9es.");let y=`${(v=p).padStart(2,"0")}:${(m=g).padStart(2,"0")}`;if(!await u(x,y))throw Error("Ce cr\xe9neau est d\xe9j\xe0 r\xe9serv\xe9. Veuillez choisir un autre horaire.");await c({name:h,phone:f,date:x,time:y,service:b}),d("success",`Votre r\xe9servation a \xe9t\xe9 confirm\xe9e !<br>D\xe9tails :<br>Date : ${x}<br>Heure : ${y}`),e.reset()}catch(w){d("error",w.message)}finally{t.disabled=!1,t.innerHTML=`
-                <i class="fas fa-calendar-check"></i> Confirmer ma r\xe9servation
-            `}}),f=`${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,"0")}-${m=String((v=new Date).getDate()).padStart(2,"0")}`,a.setAttribute("min",f),g=`${b.getFullYear()}-${String(b.getMonth()+1).padStart(2,"0")}-${x=String((b=new Date(v.getFullYear(),v.getMonth()+3,v.getDate())).getDate()).padStart(2,"0")}`,a.setAttribute("max",g);let y=document.createElement("style");y.textContent=`
-        .loader-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('reservation-form');
+    const dateInput = document.getElementById('date');
+    const hourInput = document.getElementById('hour');
+    const minuteInput = document.getElementById('minute');
+    const phoneInput = document.getElementById('phone');
+
+    if (!form || !dateInput || !hourInput || !minuteInput || !phoneInput) {
+        return;
+    }
+
+    function toLocalDate(value) {
+        const [year, month, day] = value
+            .split('-')
+            .map(Number);
+
+        return new Date(year, month - 1, day);
+    }
+
+    function formatDate(date) {
+        return [
+            date.getFullYear(),
+            String(date.getMonth() + 1).padStart(2, '0'),
+            String(date.getDate()).padStart(2, '0')
+        ].join('-');
+    }
+
+    function showMessage(type, message) {
+        const modal = document.getElementById('reservationModal');
+        const title =
+            document.getElementById('reservationModalLabel');
+        const body =
+            document.getElementById('reservationModalBody');
+
+        if (!modal || !title || !body) {
+            alert(message);
+            return;
         }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3D2B1F;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
+
+        title.textContent =
+            type === 'error'
+                ? 'Erreur'
+                : 'Démonstration frontend';
+
+        body.textContent = message;
+
+        if (
+            window.jQuery &&
+            typeof window.jQuery.fn.modal === 'function'
+        ) {
+            window.jQuery(modal).modal('show');
+            return;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        modal.style.display = 'block';
+        modal.classList.add('show');
+    }
+
+    function validateDate() {
+        if (!dateInput.value) {
+            return false;
         }
-    `,document.head.appendChild(y)});
-    document.addEventListener('DOMContentLoaded', function() {
-        const menuToggle = document.querySelector('.mobile-menu-toggle');
-        
-        if(menuToggle) {
-            // Reset complet des événements
-            menuToggle.replaceWith(menuToggle.cloneNode(true));
-            
-            document.querySelector('.mobile-menu-toggle').addEventListener('click', function(e) {
-                e.stopImmediatePropagation();
-                document.querySelector('.mobile-sidebar').classList.add('active');
-                document.querySelector('.mobile-menu-overlay').style.display = 'block';
-            });
+
+        const selectedDate =
+            toLocalDate(dateInput.value);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (selectedDate < today) {
+            dateInput.value = '';
+
+            showMessage(
+                'error',
+                "Veuillez sélectionner une date à partir d'aujourd'hui."
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateTime() {
+        if (
+            !dateInput.value ||
+            !hourInput.value ||
+            !minuteInput.value
+        ) {
+            return false;
+        }
+
+        const selectedDate =
+            toLocalDate(dateInput.value);
+
+        const now = new Date();
+
+        if (
+            selectedDate.getFullYear() === now.getFullYear() &&
+            selectedDate.getMonth() === now.getMonth() &&
+            selectedDate.getDate() === now.getDate()
+        ) {
+            const selectedDateTime =
+                new Date(selectedDate);
+
+            selectedDateTime.setHours(
+                Number(hourInput.value),
+                Number(minuteInput.value),
+                0,
+                0
+            );
+
+            if (selectedDateTime <= now) {
+                hourInput.value = '';
+                minuteInput.value = '';
+
+                showMessage(
+                    'error',
+                    'Veuillez sélectionner une heure future.'
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function validateForm() {
+        const fullName =
+            document
+                .getElementById('full-name')
+                .value
+                .trim();
+
+        const phone =
+            phoneInput.value.trim();
+
+        const service =
+            document.getElementById('service').value;
+
+        if (fullName.length < 2) {
+            throw new Error(
+                'Veuillez entrer un nom valide.'
+            );
+        }
+
+        if (!/^\d{10}$/.test(phone)) {
+            throw new Error(
+                'Numéro de téléphone invalide. Utilisez 10 chiffres.'
+            );
+        }
+
+        if (!service) {
+            throw new Error(
+                'Veuillez sélectionner un service.'
+            );
+        }
+
+        if (!dateInput.value) {
+            throw new Error(
+                'Veuillez sélectionner une date.'
+            );
+        }
+
+        if (
+            !hourInput.value ||
+            !minuteInput.value
+        ) {
+            throw new Error(
+                'Veuillez sélectionner une heure.'
+            );
+        }
+
+        if (!validateDate() || !validateTime()) {
+            throw new Error(
+                "Veuillez vérifier la date et l'heure sélectionnées."
+            );
+        }
+    }
+
+    phoneInput.addEventListener('input', function () {
+        this.value =
+            this.value
+                .replace(/\D/g, '')
+                .slice(0, 10);
+    });
+
+    dateInput.addEventListener('change', () => {
+        validateDate();
+
+        hourInput.value = '';
+        minuteInput.value = '';
+    });
+
+    hourInput.addEventListener('change', () => {
+        if (dateInput.value && minuteInput.value) {
+            validateTime();
         }
     });
-    document.querySelector('.mobile-menu-close').addEventListener('click', function(e) {
-        e.stopPropagation();
-        this.style.backgroundColor = 'transparent'; // Force la transparence
-        document.querySelector('.mobile-sidebar').classList.remove('active');
-        document.querySelector('.mobile-menu-overlay').style.display = 'none';
+
+    minuteInput.addEventListener('change', () => {
+        if (dateInput.value && hourInput.value) {
+            validateTime();
+        }
     });
+
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+
+        try {
+            validateForm();
+
+            const time =
+                `${hourInput.value.padStart(2, '0')}:` +
+                `${minuteInput.value.padStart(2, '0')}`;
+
+            showMessage(
+                'info',
+                `Parcours validé en mode démonstration pour le ` +
+                `${dateInput.value} à ${time}. ` +
+                `Aucune réservation n'a été envoyée et aucune donnée ` +
+                `n'a été transmise à un backend.`
+            );
+
+            form.reset();
+        } catch (error) {
+            showMessage(
+                'error',
+                error.message
+            );
+        }
+    });
+
+    const today = new Date();
+
+    dateInput.min =
+        formatDate(today);
+
+    const maxDate = new Date(
+        today.getFullYear(),
+        today.getMonth() + 3,
+        today.getDate()
+    );
+
+    dateInput.max =
+        formatDate(maxDate);
+
+    const menuToggle =
+        document.querySelector('.mobile-menu-toggle');
+
+    const sidebar =
+        document.querySelector('.mobile-sidebar');
+
+    const overlay =
+        document.querySelector('.mobile-menu-overlay');
+
+    const closeButton =
+        document.querySelector('.mobile-menu-close');
+
+    if (menuToggle && sidebar && overlay) {
+        menuToggle.addEventListener('click', event => {
+            event.stopPropagation();
+
+            sidebar.classList.add('active');
+            overlay.style.display = 'block';
+        });
+    }
+
+    if (closeButton && sidebar && overlay) {
+        closeButton.addEventListener('click', event => {
+            event.stopPropagation();
+
+            sidebar.classList.remove('active');
+            overlay.style.display = 'none';
+        });
+    }
+
+    if (overlay && sidebar) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.style.display = 'none';
+        });
+    }
+});
