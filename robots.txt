@@ -1,17 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /wp-admin/
-Disallow: /tmp/
-Disallow: /private/
-Disallow: /cart/
-Disallow: /checkout/
-Disallow: /search/
 
-
-Sitemap: https://www.chic-chac.net/sitemap.xml
-
-
-# Paramètres spécifiques aux moteurs
-Host: www.chic-chac.net
-Crawl-delay: 2
+Sitemap: https://chic-chac.netlify.app/sitemap.xml
