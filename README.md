@@ -15,7 +15,7 @@
 
 <p align="center">
   <strong>Live demo:</strong>
-  https://chic-chac.netlify.app/
+  <a href="https://chic-chac-digital-transformation-an.vercel.app/">https://chic-chac-digital-transformation-an.vercel.app/</a>
 </p>
 
 ---
@@ -170,7 +170,7 @@ Each main customer journey is represented by a dedicated HTML page while shared 
 | SEO | Meta tags, Schema.org, sitemap.xml, robots.txt |
 | Analytics | Google Analytics |
 | Maps | Google Maps embed |
-| Deployment | Netlify |
+| Deployment | Vercel |
 | Version control | Git / GitHub |
 
 The project intentionally remains a lightweight frontend application rather than introducing a modern framework that is unnecessary for the archived B2C scope.
@@ -270,8 +270,8 @@ Because this is a static frontend project, no application server or database is 
 Clone the repository:
 
 ```bash
-git clone https://github.com/mhiriaziz13-gif/Chic-Chac-Website.git
-cd Chic-Chac-Website
+git clone https://github.com/ahmedazizmhiri/Chic-Chac-Digital-Transformation-and-Data-Driven-Marketing.git
+cd Chic-Chac-Digital-Transformation-and-Data-Driven-Marketing
 ```
 
 You can then serve the directory using any static HTTP server.
@@ -330,6 +330,8 @@ Third-party libraries, frameworks, fonts, icons and other dependencies remain su
 **Ahmed Aziz Mhiri**
 
 Digital Transformation • Marketing & Commercial Analytics • Business Intelligence • Automation
+
+GitHub: [https://github.com/ahmedazizmhiri](https://github.com/ahmedazizmhiri)
 
 Portfolio:  
 https://ahmedaziz-portfolio.vercel.app/
